@@ -13,5 +13,15 @@ def shortest_shortest_path(graph, source):
       (shortest path weight, shortest path number of edges). See test case for example.
     """
     ### TODO
-    pass
-    
+    best = {source: (0, 0)}
+    frontier = [(0, 0, source)]
+    while frontier:
+        cost_so_far, hops_so_far, node = heappop(frontier)
+        if (cost_so_far, hops_so_far) > best.get(node, (float('inf'), float('inf'))):
+            continue
+        for neighbor, step in graph[node]:
+            candidate = (cost_so_far + step, hops_so_far + 1)
+            if candidate < best.get(neighbor, (float('inf'), float('inf'))):
+                best[neighbor] = candidate
+                heappush(frontier, (candidate[0], candidate[1], neighbor))
+    return best
